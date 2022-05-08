@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<!--        <link rel="stylesheet" href="{% static 'style.css' %}">-->
+        <link rel="stylesheet" href="{% static 'bootstrap-5.1.3-dist/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+        <title>Precio del dolar blue en Argentina | {% block title %} {% endblock title %}</title>
+    </head>
+    <body>
+        {% url 'precios' as precios_home %}
+        <div class="ui menu">
+            <a class="item"><img style="height:100px;width:100px;" src="{% static 'dolar.jpg' %}" alt=""></a>
+            <a href="{{precios_home}}" class="active item">Reiniciar</a>
+        </div>
+        <div class="container mb-3 mt-3">
+            {% block content %}
+            {% endblock content %}
+        </div>
+        <div class="container mb-3 mt-3">
+            <p style="text-align:right;">Developed by Hernán Garrido.</p>
+        </div>
+    </body>
+</html>
