@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def scrap(url: str):
+def scrap_now(url: str):
     """Scraps the given url and looks for compra and venta dolar prices.
     Example: '<div class="topic">Compra</div>\n<div class="value">$198.00</div>
     <div class="topic">Venta</div>\n<div class="value">$201.00</div>'

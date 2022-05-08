@@ -13,8 +13,9 @@
     <body>
         {% url 'precios' as precios_home %}
         <div class="ui menu">
-            <a class="item"><img style="height:100px;width:100px;" src="{% static 'dolar.jpg' %}" alt=""></a>
+            <a class="item"><img style="height:100px;width:100px;" src="{% static 'static_files/dolar.jpg' %}" alt=""></a>
             <a href="{{precios_home}}" class="active item">Reiniciar</a>
+            <a href="{% url 'scrap' %}" class="active item">Scrap</a>
         </div>
         <div class="container mb-3 mt-3">
             {% block content %}
