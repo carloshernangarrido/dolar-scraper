@@ -33,8 +33,8 @@ def precios(request):
         if len(precios_qs) > 0:
             precios_df = pandas.DataFrame(precios_qs.values())
             print(precios_df)
-            precios_df['date_time'] = precios_df['date_time'].apply(lambda x: x.strftime('%Y%m%d %H:%M:%S'))
-            precios_df.rename({'compra_value': 'compra', 'venta_value': 'venta'}, axis=1,
+            precios_df['fecha'] = precios_df['fecha'].apply(lambda x: x.strftime('%Y%m%d %H:%M:%S'))
+            precios_df.rename({'precio_de_compra': 'compra', 'precio_de_venta': 'venta'}, axis=1,
                               inplace=True)
             chart = get_chart(chart_type, precios_df, precio_type)
             precios_df = precios_df.to_html()
