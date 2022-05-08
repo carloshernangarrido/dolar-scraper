@@ -1,5 +1,4 @@
 from scraper import scrap
-import requests
 
 
 if __name__ == '__main__':
