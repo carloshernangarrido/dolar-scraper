@@ -16,6 +16,6 @@ class PreciosSearchForm(forms.Form):
     date_from = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='desde',
                                 initial=timezone.now().date())
     date_to = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='hasta',
-                                initial=timezone.now().date())
+                              initial=timezone.now().date())
     chart_type = forms.ChoiceField(choices=CHART_CHOICES, label='tipo de gráfico')
     precio_type = forms.ChoiceField(choices=PRECIO_TYPE_CHOICES)

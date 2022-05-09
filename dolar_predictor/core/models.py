@@ -12,7 +12,7 @@ class Precios(models.Model):
     venta_value = models.DecimalField(max_digits=10, decimal_places=2, name='precio_de_venta')
 
     def __str__(self):
-        return f'{self.date_time}, venta: ${self.venta_value}, compra: ${self.compra_value}'
+        return f'{self.fecha}, venta: ${self.precio_de_venta}, compra: ${self.precio_de_compra}'
 
     def save(self, *args, **kwargs):
         if self.fecha is None:

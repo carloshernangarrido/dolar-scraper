@@ -1,6 +1,6 @@
 import pandas
 import pytz
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.contrib import messages
 from .forms import PreciosSearchForm
@@ -27,12 +27,13 @@ def precios(request):
         date_to = tz.localize(naive_to, is_dst=None).astimezone(pytz.utc)
         chart_type = request.POST.get('chart_type')
         precio_type = request.POST.get('precio_type')
-        print(date_from, date_to, chart_type, precio_type)
+        # print(date_from, date_to, chart_type, precio_type)
         precios_qs = Precios.objects.filter(fecha__lte=date_to, fecha__gte=date_from)
+        for precio in precios_qs:
+            print(precio.fecha)
 
         if len(precios_qs) > 0:
             precios_df = pandas.DataFrame(precios_qs.values())
-            print(precios_df)
             precios_df['fecha'] = precios_df['fecha'].apply(lambda x: x.strftime('%Y%m%d %H:%M:%S'))
             precios_df.rename({'precio_de_compra': 'compra', 'precio_de_venta': 'venta'}, axis=1,
                               inplace=True)
@@ -50,12 +51,11 @@ def precios(request):
 
 
 def scrap(request):
-    messages.warning(request, 'scrap!')
     url = 'https://dolarhoy.com/cotizaciondolarblue'
     venta_value, compra_value = scrap_now(url)
-    print(f'Compra: {compra_value}, Venta: {venta_value}')
+    # print(f'Compra: {compra_value}, Venta: {venta_value}')
     precio = Precios(fecha=timezone.now(),
                      precio_de_venta=Decimal.from_float(venta_value),
                      precio_de_compra=Decimal.from_float(compra_value))
     precio.save()
-    return precios(request)
+    return redirect('precios')

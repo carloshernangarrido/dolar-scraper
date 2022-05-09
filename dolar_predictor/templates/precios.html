@@ -14,4 +14,14 @@ Dólar blue en Argentina
     {{search_form|crispy}}
     <button class="btn btn-primary mt-3" type="submit">Buscar</button>
 </form>
+<hr>
+    {% if precios_df %}
+        <hr>
+        <b>Precio del dólar</b>
+        <img src="data:image/png;base64, {{chart|safe}}" alt="" id="img">
+        <b>Precios Dataframe</b>
+        {{precios_df|safe}}
+        <hr>
+    {% endif %}
+<br>
 {% endblock content %}
