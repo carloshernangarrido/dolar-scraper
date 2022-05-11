@@ -2,8 +2,10 @@ from django import forms
 from django.utils import timezone
 
 CHART_CHOICES = (
-    ('#1', 'Bar Graph'),
-    ('#2', 'Line Graph')
+    ('#0', 'Constante'),
+    ('#1', 'Lineal'),
+    ('#2', 'Cuadrático'),
+    ('#3', 'Cúbico'),
 )
 PRECIO_TYPE_CHOICES = (
     ('#1', 'Venta'),
@@ -17,5 +19,5 @@ class PreciosSearchForm(forms.Form):
                                 initial=timezone.now().date())
     date_to = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='hasta',
                               initial=timezone.now().date())
-    chart_type = forms.ChoiceField(choices=CHART_CHOICES, label='tipo de gráfico')
+    chart_type = forms.ChoiceField(choices=CHART_CHOICES, label='Grado del polinomio de Taylor')
     precio_type = forms.ChoiceField(choices=PRECIO_TYPE_CHOICES)

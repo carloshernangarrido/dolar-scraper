@@ -49,26 +49,25 @@ def get_chart(chart_type, data, precio_type, **kwargs):
     #     ('#2', 'Compra'),
     #     ('#3', 'Ambos'),
     # )
-    pyplot.switch_backend('AGG')
-    fig = pyplot.figure(figsize=(10, 4))
-    key = 'fecha'
     d = data
-    date_time_index = pd.to_datetime(data['fecha'])
+    d = d.drop(['fecha y hora'], axis=1)
+    d.insert(loc=0, column='fecha', value=data['fecha y hora'].str[0:8])
+    d = d.drop_duplicates(subset='fecha', keep='first', inplace=False, ignore_index=False)
+    pyplot.switch_backend('AGG')
+    fig = pyplot.figure(figsize=(10, 5))
 
-    if chart_type == '#1':
-        print("Bar graph")
-        if precio_type == '#1':
-            pyplot.bar(d[key], d['venta'])
-        elif precio_type == '#2':
-            pyplot.bar(d[key], d['compra'])
-    elif chart_type == '#2':
-        print("Line graph")
-        if precio_type == '#1':
-            pyplot.plot(date_time_index, d['venta'], color='gray', marker='o', linestyle='dashed')
-        elif precio_type == '#2':
-            pyplot.plot(date_time_index, d['compra'], color='gray', marker='o', linestyle='dashed')
+    date_time_index = pd.to_datetime(data['fecha y hora'])
+
+    # Taylor polynomial
+
+    if precio_type == '#1':
+        pyplot.plot(date_time_index, data['venta'], color='gray', marker='x', linestyle='dashed')
+    elif precio_type == '#2':
+        pyplot.plot(date_time_index, data['compra'], color='gray', marker='o', linestyle='dashed')
     else:
-        print("Apparently...chart_type not identified")
+        pyplot.plot(date_time_index, data['venta'], color='gray', marker='x', linestyle='dashed')
+        pyplot.plot(date_time_index, data['compra'], color='gray', marker='o', linestyle='dashed')
+
     pyplot.tight_layout()
     pyplot.gcf().autofmt_xdate()
     chart = get_graph()

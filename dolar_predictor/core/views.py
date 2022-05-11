@@ -27,18 +27,18 @@ def precios(request):
         date_to = tz.localize(naive_to, is_dst=None).astimezone(pytz.utc)
         chart_type = request.POST.get('chart_type')
         precio_type = request.POST.get('precio_type')
-        # print(date_from, date_to, chart_type, precio_type)
-        precios_qs = Precios.objects.filter(fecha__lte=date_to, fecha__gte=date_from)
-        for precio in precios_qs:
-            print(precio.fecha)
+        precios_qs = Precios.objects.filter(fecha__date__lte=date_to, fecha__date__gte=date_from)
 
         if len(precios_qs) > 0:
             precios_df = pandas.DataFrame(precios_qs.values())
-            precios_df['fecha'] = precios_df['fecha'].apply(lambda x: x.strftime('%Y%m%d %H:%M:%S'))
-            precios_df.rename({'precio_de_compra': 'compra', 'precio_de_venta': 'venta'}, axis=1,
-                              inplace=True)
+            precios_df['fecha'] = precios_df['fecha'].\
+                apply(lambda x: timezone.localtime(x, 'America/Argentina/Buenos_Aires'))
+            precios_df['fecha'] = precios_df['fecha'].apply(lambda x: x.strftime('%d/%m/%Y %H:%M:%S'))
+            precios_df.rename({'fecha': 'fecha y hora', 'precio_de_compra': 'compra', 'precio_de_venta': 'venta'},
+                              axis=1, inplace=True)
             chart = get_chart(chart_type, precios_df, precio_type)
-            precios_df = precios_df.to_html()
+            precios_df = precios_df.to_html(index=False, justify='left', col_space=200).\
+                replace('<td>', '<td align="left">')
         else:
             messages.warning(request, "Todavía no hay datos...")
 
