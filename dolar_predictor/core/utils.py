@@ -43,23 +43,23 @@ def get_graph():
     return graph
 
 
-def get_chart(chart_type, data, precio_type, **kwargs):
+def get_chart(data, precio_type):
     # PRECIO_TYPE_CHOICES = (
     #     ('#1', 'Venta'),
     #     ('#2', 'Compra'),
     #     ('#3', 'Ambos'),
     # )
-    d = data
-    d = d.drop(['fecha y hora'], axis=1)
-    d.insert(loc=0, column='fecha', value=data['fecha y hora'].str[0:8])
-    d = d.drop_duplicates(subset='fecha', keep='first', inplace=False, ignore_index=False)
+
+    if 'fecha y hora' in data:
+        date_time_index = pd.to_datetime(data['fecha y hora'], format='%d/%m/%Y %H:%M:%S')
+    elif 'fecha' in data:
+        date_time_index = pd.to_datetime(data['fecha'], format='%d/%m/%Y')
+    else:
+        return None
+
     pyplot.switch_backend('AGG')
-    fig = pyplot.figure(figsize=(10, 5))
-
-    date_time_index = pd.to_datetime(data['fecha y hora'])
-
+    pyplot.figure(figsize=(10, 5))
     # Taylor polynomial
-
     if precio_type == '#1':
         pyplot.plot(date_time_index, data['venta'], color='gray', marker='x', linestyle='dashed')
     elif precio_type == '#2':
@@ -72,3 +72,12 @@ def get_chart(chart_type, data, precio_type, **kwargs):
     pyplot.gcf().autofmt_xdate()
     chart = get_graph()
     return chart
+
+
+def reduce(d):
+    d_copy = d.copy()
+    d_copy.insert(loc=0, column='fecha', value=d['fecha y hora'].str[0:10])
+    d_copy = d_copy.drop(['fecha y hora'], axis=1)
+    d_copy.drop_duplicates(subset='fecha', keep='first', inplace=True, ignore_index=False)
+    print(d_copy)
+    return d_copy

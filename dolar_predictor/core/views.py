@@ -5,7 +5,7 @@ from django.views.generic import ListView
 from django.contrib import messages
 from .forms import PreciosSearchForm
 from .models import *
-from .utils import get_chart, scrap_now
+from .utils import get_chart, scrap_now, reduce
 from django.conf import settings
 import datetime
 from decimal import Decimal
@@ -13,6 +13,7 @@ from decimal import Decimal
 
 def precios(request):
     precios_df = None
+    precios_df_html = None
     chart = None
     no_data = None
     search_form = PreciosSearchForm(request.POST or None)
@@ -36,15 +37,15 @@ def precios(request):
             precios_df['fecha'] = precios_df['fecha'].apply(lambda x: x.strftime('%d/%m/%Y %H:%M:%S'))
             precios_df.rename({'fecha': 'fecha y hora', 'precio_de_compra': 'compra', 'precio_de_venta': 'venta'},
                               axis=1, inplace=True)
-            chart = get_chart(chart_type, precios_df, precio_type)
-            precios_df = precios_df.to_html(index=False, justify='left', col_space=200).\
+            chart = get_chart(reduce(precios_df), precio_type)
+            precios_df_html = reduce(precios_df).to_html(index=False, justify='left', col_space=200).\
                 replace('<td>', '<td align="left">')
         else:
             messages.warning(request, "Todavía no hay datos...")
 
     context = {
         'search_form': search_form,
-        'precios_df': precios_df,
+        'precios_df': precios_df_html,
         'chart': chart,
     }
     return render(request, 'precios.html', context)
