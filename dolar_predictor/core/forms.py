@@ -2,10 +2,10 @@ from django import forms
 from django.utils import timezone
 
 CHART_CHOICES = (
-    ('#0', 'Constante'),
-    ('#1', 'Lineal'),
-    ('#2', 'Cuadrático'),
-    ('#3', 'Cúbico'),
+    ('0', 'Constante'),
+    ('1', 'Lineal'),
+    ('2', 'Cuadrático'),
+    ('3', 'Cúbico'),
 )
 PRECIO_TYPE_CHOICES = (
     ('#1', 'Venta'),
