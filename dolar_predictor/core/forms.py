@@ -16,8 +16,8 @@ PRECIO_TYPE_CHOICES = (
 
 class PreciosSearchForm(forms.Form):
     date_from = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='desde',
-                                initial=timezone.now().date())
+                                initial=timezone.now().date()-timezone.timedelta(days=30))
     date_to = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='hasta',
                               initial=timezone.now().date())
-    chart_type = forms.ChoiceField(choices=CHART_CHOICES, label='Grado del polinomio de Taylor')
-    precio_type = forms.ChoiceField(choices=PRECIO_TYPE_CHOICES)
+    chart_type = forms.ChoiceField(choices=CHART_CHOICES, label='Grado del polinomio de Taylor', initial='2')
+    precio_type = forms.ChoiceField(choices=PRECIO_TYPE_CHOICES, initial='#3')
